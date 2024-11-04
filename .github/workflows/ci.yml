@@ -30,23 +30,71 @@ jobs:
   check-changes:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && always()
 
     steps:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
+    - name: Debug SHA values
+      run: |
+        echo "Previous SHA: ${{ github.event.before }}"
+        echo "Current SHA: ${{ github.sha }}"
     - name: Check for changes
       run: |
-        git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+        PREVIOUS_SHA="${{ github.event.before }}"
+        CURRENT_SHA="${{ github.sha }}"
+        
+        if [ -n "$PREVIOUS_SHA" ] && [ "$PREVIOUS_SHA" != "0000000000000000000000000000000000000000" ]; then
+          if git rev-parse --quiet --verify "$PREVIOUS_SHA^{commit}" >/dev/null 2>&1; then
+            echo "Comparing changes between $PREVIOUS_SHA and $CURRENT_SHA"
+            git diff --name-only $PREVIOUS_SHA $CURRENT_SHA || echo "No changes detected or error occurred"
+          else
+            echo "Previous commit $PREVIOUS_SHA not found. Listing all changed files in this push:"
+            git diff-tree --no-commit-id --name-only -r $CURRENT_SHA
+          fi
+        else
+          echo "Unable to determine previous commit. Listing all changed files in this push:"
+          git diff-tree --no-commit-id --name-only -r $CURRENT_SHA
+        fi
     - name: List changed files
       run: |
+        PREVIOUS_SHA="${{ github.event.before }}"
+        CURRENT_SHA="${{ github.sha }}"
+        
         echo "Changed files:"
-        git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+        if [ -n "$PREVIOUS_SHA" ] && [ "$PREVIOUS_SHA" != "0000000000000000000000000000000000000000" ]; then
+          if git rev-parse --quiet --verify "$PREVIOUS_SHA^{commit}" >/dev/null 2>&1; then
+            git diff --name-only $PREVIOUS_SHA $CURRENT_SHA || echo "No changes detected or error occurred"
+          else
+            git diff-tree --no-commit-id --name-only -r $CURRENT_SHA
+          fi
+        else
+          git diff-tree --no-commit-id --name-only -r $CURRENT_SHA
+        fi
     - name: Check for package.json changes
       run: |
-        if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "package.json"; then
-          echo "package.json has changed. Consider updating the version."
+        PREVIOUS_SHA="${{ github.event.before }}"
+        CURRENT_SHA="${{ github.sha }}"
+        
+        if [ -n "$PREVIOUS_SHA" ] && [ "$PREVIOUS_SHA" != "0000000000000000000000000000000000000000" ]; then
+          if git rev-parse --quiet --verify "$PREVIOUS_SHA^{commit}" >/dev/null 2>&1; then
+            if git diff --name-only $PREVIOUS_SHA $CURRENT_SHA | grep -q "package.json"; then
+              echo "package.json has changed. Consider updating the version."
+            else
+              echo "package.json has not changed."
+            fi
+          else
+            if git diff-tree --no-commit-id --name-only -r $CURRENT_SHA | grep -q "package.json"; then
+              echo "package.json has changed. Consider updating the version."
+            else
+              echo "package.json has not changed."
+            fi
+          fi
         else
-          echo "package.json has not changed."
+          if git diff-tree --no-commit-id --name-only -r $CURRENT_SHA | grep -q "package.json"; then
+            echo "package.json has changed. Consider updating the version."
+          else
+            echo "package.json has not changed."
+          fi
         fi

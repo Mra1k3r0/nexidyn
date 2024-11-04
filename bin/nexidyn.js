@@ -67,7 +67,7 @@ for (let i = 0; i < args.length; i++) {
   } else if (arg === '-c' && i + 1 < args.length) {
     connectionsPerServer = parseInt(args[++i], 10);
   } else if (arg === '--debug' || arg === '-d') {
-    if (i + 1 < args.length && (args[i+1] === 'true' || args[i+1] === 'false')) {
+    if (i + 1 < args.length && (args[i + 1] === 'true' || args[i + 1] === 'false')) {
       debug = args[++i] === 'true';
     } else {
       debug = true;

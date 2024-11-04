@@ -1,6 +1,6 @@
 {
   "name": "nexidyn",
-  "version": "0.17.0",
+  "version": "0.17.2",
   "description": "A fast multi-threaded downloader CLI tool",
   "main": "lib/main.js",
   "bin": {

@@ -5,12 +5,12 @@
     NexiDyn is a powerful CLI downloader that uses Node.js to provide blazing-fast speeds through multi-threading and intelligent chunk management. Perfect for large files and unstable connections, it offers a robust set of features for efficient and reliable downloads.
   </p>
 
-  [![npm version](https://img.shields.io/npm/v/nexidyn-beta.svg?style=flat-square)](https://www.npmjs.org/package/nexidyn-beta)
-  [![Build status](https://img.shields.io/github/actions/workflow/status/mra1k3r0/nexidyn/ci.yml?branch=main&label=CI&logo=github&style=flat-square)](https://github.com/mra1k3r0/nexidyn/actions/workflows/ci.yml)
-  [![install size](https://img.shields.io/badge/dynamic/json?url=https://packagephobia.com/v2/api.json?p=nexidyn-beta&query=$.install.pretty&label=install%20size&style=flat-square)](https://packagephobia.now.sh/result?p=nexidyn-beta)
-  [![minzipped size](https://img.shields.io/bundlephobia/minzip/nexidyn-beta)](https://bundlephobia.com/package/nexidyn-beta)
-  [![npm downloads](https://img.shields.io/npm/dm/nexidyn.svg?style=flat-square)](https://npm-stat.com/charts.html?package=nexidyn-beta)
-  [![Known Vulnerabilities](https://snyk.io/test/npm/nexidyn/badge.svg)](https://snyk.io/test/npm/nexidyn-beta)
+  [![npm version](https://img.shields.io/npm/v/nexidyn.svg?style=flat-square)](https://www.npmjs.org/package/nexidyn)
+  [![Build status](https://img.shields.io/github/actions/workflow/status/mra1k3r0/nexidyn/ci.yml?branch=master&label=CI&logo=github&style=flat-square)](https://github.com/mra1k3r0/nexidyn/actions/workflows/ci.yml)
+  [![install size](https://img.shields.io/badge/dynamic/json?url=https://packagephobia.com/v2/api.json?p=nexidyn&query=$.install.pretty&label=install%20size&style=flat-square)](https://packagephobia.now.sh/result?p=nexidyn)
+  [![minzipped size](https://img.shields.io/bundlephobia/minzip/nexidyn)](https://bundlephobia.com/package/nexidyn)
+  [![npm downloads](https://img.shields.io/npm/dm/nexidyn.svg?style=flat-square)](https://npm-stat.com/charts.html?package=nexidyn)
+  [![Known Vulnerabilities](https://snyk.io/test/npm/nexidyn/badge.svg)](https://snyk.io/test/npm/nexidyn)
 
   <p>
     <a href="#-installation">Installation</a> •
