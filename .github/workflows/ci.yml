@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x, 20.x, 22.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+      env:
+        ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: ${{ matrix.node-version == '16.x' && 'true' || 'false' }}
+    - run: npm ci
+    - run: npm test
+    - name: Run NexiDyn (Smoke Test)
+      run: node bin/nexidyn.js --version
+
+  check-changes:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Check for changes
+      run: |
+        git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+    - name: List changed files
+      run: |
+        echo "Changed files:"
+        git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+    - name: Check for package.json changes
+      run: |
+        if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "package.json"; then
+          echo "package.json has changed. Consider updating the version."
+        else
+          echo "package.json has not changed."
+        fi
