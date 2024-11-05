@@ -1,7 +1,7 @@
 {
   "name": "nexidyn",
-  "version": "0.17.3",
-  "description": "A fast multi-threaded downloader CLI tool",
+  "version": "0.17.6",
+  "description": "A lightning-fast, multi-threaded downloader CLI tool built with Node.js",
   "main": "lib/main.js",
   "bin": {
     "nexidyn": "bin/nexidyn.js"
@@ -31,5 +31,7 @@
   "bugs": {
     "url": "https://github.com/mra1k3r0/nexidyn/issues"
   },
-  "homepage": "https://github.com/mra1k3r0/nexidyn#readme"
+  "homepage": "https://github.com/mra1k3r0/nexidyn#readme",
+  "readme": "README.md",
+  "devDependencies": {}
 }
