@@ -18,7 +18,7 @@
   "author": "mra1k3r0",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^1.7.7",
     "chalk": "^4.1.2"
   },
   "directories": {
@@ -31,6 +31,5 @@
   "bugs": {
     "url": "https://github.com/mra1k3r0/nexidyn/issues"
   },
-  "homepage": "https://github.com/mra1k3r0/nexidyn#readme",
-  "devDependencies": {}
+  "homepage": "https://github.com/mra1k3r0/nexidyn#readme"
 }

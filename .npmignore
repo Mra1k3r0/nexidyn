@@ -36,3 +36,4 @@ node_modules/
 .DS_Store
 Thumbs.db
 .github
+lib/*Deprecated.js
