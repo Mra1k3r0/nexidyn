@@ -12,6 +12,8 @@ let output = '';
 let threads = 4;
 let retries = 3;
 let connectionsPerServer = 2;
+let parallelServers = 1;
+let throttle = 0;
 let debug = false;
 
 function showHelp() {
@@ -23,13 +25,15 @@ Options:
   -t <number>              Number of download threads (default: 4)
   -r <number>              Number of retries for failed chunks (default: 3)
   -c <number>              Number of simultaneous connections (default: 2)
+  -p <number>              Number of parallel servers (default: 1)
+  --throttle <number>      Throttle download speed (ms delay between chunks, default: 0)
   --debug, -d              Enable debug mode (optional: true/false)
   --version, -v            Show version number
   --help, -h               Show this help message
   --update, -u             Update nexidyn to the latest version
 
 Example:
-  nexidyn https://example.com/file.zip -o myfile.zip -t 8 -c 4 -r 5 -d true
+  nexidyn https://example.com/file.zip -o myfile.zip -t 8 -c 4 -r 5 -p 3 --throttle 50 -d true
   `);
 }
 
@@ -66,6 +70,10 @@ for (let i = 0; i < args.length; i++) {
     retries = parseInt(args[++i], 10);
   } else if (arg === '-c' && i + 1 < args.length) {
     connectionsPerServer = parseInt(args[++i], 10);
+  } else if (arg === '-p' && i + 1 < args.length) {
+    parallelServers = parseInt(args[++i], 10);
+  } else if (arg === '--throttle' && i + 1 < args.length) {
+    throttle = parseInt(args[++i], 10);
   } else if (arg === '--debug' || arg === '-d') {
     if (i + 1 < args.length && (args[i + 1] === 'true' || args[i + 1] === 'false')) {
       debug = args[++i] === 'true';
@@ -94,8 +102,9 @@ if (!fileUrl) {
 const downloader = new Downloader();
 downloader.setDebug(debug);
 
-downloader.downloadFile(fileUrl, output, threads, retries, connectionsPerServer)
+downloader.downloadFile(fileUrl, output, threads, retries, connectionsPerServer, parallelServers, throttle)
   .catch((err) => {
     console.error("\nDownload failed:", err.message);
     process.exit(1);
   });
+
